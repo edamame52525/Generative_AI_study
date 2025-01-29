@@ -29,4 +29,3 @@ chain = prompt | llm | output_parser
 #チェーンの実行
 print(chain.invoke({"sentences_before_check":"ここんにちは中じまでえす"}))
 
-time.sleep(1)  # 1秒間隔で実行
