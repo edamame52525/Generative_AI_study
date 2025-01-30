@@ -12,3 +12,9 @@ python -m venv venv
 #venvに入る（linuxの場合は少し違うが、activateを頑張って探せばOK）
 source venv/Scripts/activate
 
+chromadb==0.4.13じゃないとだめらしい
+
+#実行
+
+cd src
+python -m streamlit chat/__main__.py
