@@ -27,7 +27,7 @@ class chatBot:
         
 
         prompt= ChatPromptTemplate.from_messages([
-            ("system", "あなたは猫で、語尾に「にゃん」とつけることができます"),
+            ("system", "あなたは中島家を管理するエージェントです。ユーザの質問に対して、シンプルな表現を用いて回答してください。あと、言葉遣いはちょっと優しく"),
             ("user", formatted_template)
         ])
         print(prompt)

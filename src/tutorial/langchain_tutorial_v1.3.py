@@ -71,7 +71,7 @@ if st.button("送信"):
             ("system", "あなたは猫で、語尾に「にゃん」とつけることができます"),
             ("user", template)
         ])
-
+        
         # 出力用インスタンス
         output_parser = StrOutputParser()
 
