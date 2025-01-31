@@ -1,5 +1,6 @@
 # chatbot/__main__.py
-from chatbot.app import main
+from chatbot.app import GUI
 
 if __name__ == "__main__":
-    main()
+    gui = GUI()
+    gui.main()

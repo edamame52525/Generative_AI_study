@@ -9,32 +9,31 @@ from chatbot.venctor_store_manage import VectorStoreManager
 
 class chatBot:
     
-    def __init__(self,user_message:str):
-        self.user_message = user_message
+    def __init__(self,VSM:VectorStoreManager):
         self.llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0, max_tokens=300)
-        self.knowledge = VectorStoreManager("chatbot/data").index.query(self.user_message,llm=self.llm)
         self.prompt = self.create_prompt()
+        self.vsm = VSM
+        self.knlg = ""
 
     def create_prompt(self):
 
         template ="""
-            以下の情報に基づいて、文章を作成してください。
+            以下の情報を考慮して、文章を作成してください。
             知識：{search_result}
             質問：{user_question}
-            """
-        # フォーマットしてテンプレートに埋め込む
-        formatted_template = template.format(search_result=self.knowledge, user_question=self.user_message)
-        
+            """        
 
         prompt= ChatPromptTemplate.from_messages([
             ("system", "あなたは中島家を管理するエージェントです。ユーザの質問に対して、シンプルな表現を用いて回答してください。あと、言葉遣いはちょっと優しく"),
-            ("user", formatted_template)
+            ("user", template)
         ])
-        print(prompt)
+        # print(prompt)
         return prompt
 
-    def create_message(self):
-         # 出力用インスタンス
+    def create_message(self,user_message:str):
+        self.knlg = self.vsm.index.query(user_message, llm=self.llm)
+        # 出力用インスタンス
+
         output_parser = StrOutputParser()
 
         # チェーンの作成
@@ -42,13 +41,17 @@ class chatBot:
 
         # チェーンの実行
         response = chain.invoke({
-            "search_results": self.knowledge,
-            "user_question": self.user_message
+            "search_result": self.knlg,  # 変数名を修正
+            "user_question": user_message
         })
 
         return response
+    
+    
+    
+    def update_knowledge(self):
+        self.vsm.update_vector_store()
 
 
 
 
-        
